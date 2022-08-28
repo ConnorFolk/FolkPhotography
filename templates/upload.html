@@ -1,0 +1,18 @@
+
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+    <title> Image Classifier </title>
+    
+</head>
+
+<body>
+    <h1> Upload an Image </h1>
+    <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}"> 
+    <input type=file name=photo>
+    <input type="submit">
+    </form>
+    <img src="/photos/001110220001.jpg" width="400" height=auto >
+</body>
+
+</html>

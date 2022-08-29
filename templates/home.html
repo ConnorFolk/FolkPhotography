@@ -21,7 +21,7 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
   <a href="#" class="navbar-brand">Sublime Cover Bandits</a>
     <ul class="navbar-nav mr-auto">
-       <li class="nav-item"><a href="" class="nav-link">Home</a></li>
+       <li class="nav-item"><a href="{{url_for('home')}}" class="nav-link">Home</a></li>
              <li class="nav-item dropdown">
                 <a href="" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Portfolios</a>
                      <div class="dropdown-menu">
@@ -30,7 +30,7 @@
                         <a href="{{url_for('lots')}}" class="dropdown-item">Lots</a>
                      </div>
           </li>
-
+        <li class="nav-item"><a href="{{url_for('login')}}" class="nav-link">Login</a></li>
     </ul>
 </nav>
     
@@ -55,7 +55,7 @@
     <div class="card-group">
         
         <a href="{{url_for('folk')}}">
-            <div class="card">
+            <div class="card text-center">
             <img class="card-img-top" src="/static/images/Connor.jpg" alt="Card image cap">
             <h3 class="card-title-mt3">Connor Folk</h3>
            </a> </div>
@@ -64,7 +64,7 @@
             
         
              <a href="{{url_for('coop')}}">
-             <div class="card">
+             <div class="card text-center">
             <img class="card-img-top" src="/static/images/coopprofile.jpg" alt="Card image cap">
             <h3 class="card-title-mt3">Cooper Levin</h3>
             </a></div>
@@ -72,7 +72,7 @@
             
        
         <a href="{{url_for('lots')}}">
-            <div class="card">
+            <div class="card text-center">
             <img class="card-img-top" src="/static/images/lotsprofile.jpg" alt="Card image cap">
             <h3 class="card-title-mt3">Matthew Lotspeich</h3>
             </a> </div>
@@ -83,10 +83,3 @@
     </section>
 
 
-    {% for folder in folders %}
-    <a href="{{url_for('repo', var=folder)}}">
-    <img src="/static/images/black_folder.png" width="400" height=auto/>
-    </a>
-    <figcaption>{{folder}}.</figcaption>
-    {% endfor %}
-   </body>

@@ -9,6 +9,8 @@ from flask import Flask, render_template, request, redirect, url_for
 #from flask_uploads import UploadSet, configure_uploads, IMAGES
 import os
 from os.path import isfile, join, isdir
+from werkzeug.utils import secure_filename
+
 
 app= Flask(__name__)
 
@@ -16,48 +18,170 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 
 @app.route('/')
 def home():
-    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/connor') if isdir(join(app.config['UPLOAD_FOLDER'] + '/connor', f))]
+    app.config['UPLOAD_FOLDER'] = 'static/images'
+    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/folk') if isdir(join(app.config['UPLOAD_FOLDER'] + '/folk', f))]
     return render_template('home.html', folders=folders)
 
 @app.route('/folk')
 def folk():
-    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/connor') if isdir(join(app.config['UPLOAD_FOLDER'] + '/connor', f))]
+    app.config['UPLOAD_FOLDER'] = 'static/images'
+    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/folk') if isdir(join(app.config['UPLOAD_FOLDER'] + '/folk', f))]
     return render_template('folk.html', folders=folders)
 
 @app.route('/folk/<var>')
 def folkrepo(var):
-    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/connor') if isdir(join(app.config['UPLOAD_FOLDER'] + '/connor', f))]
+    app.config['UPLOAD_FOLDER'] = 'static/images'
+    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/folk') if isdir(join(app.config['UPLOAD_FOLDER'] + '/folk', f))]
     if str(var) in folders:
-        folderpath= app.config['UPLOAD_FOLDER'] + "/connor/" + str(var)
+        folderpath= app.config['UPLOAD_FOLDER'] + "/folk/" + str(var)
         filename = ['/'+ folderpath + '/' +  f for f in os.listdir(folderpath) if isfile(join(folderpath, f))]
-        return  render_template('blash.html', userimage=filename)
+        return  render_template('blash.html', userimage=filename, name=var)
+    else:
+        return f'nope'
+@app.route('/coop')
+def coop():
+    app.config['UPLOAD_FOLDER'] = 'static/images'
+    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/coop') if isdir(join(app.config['UPLOAD_FOLDER'] + '/coop', f))]
+    return render_template('coop.html', folders=folders)    
+
+@app.route('/coop/<var>')
+def cooprepo(var):
+    app.config['UPLOAD_FOLDER'] = 'static/images'
+    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/coop') if isdir(join(app.config['UPLOAD_FOLDER'] + '/coop', f))]
+    if str(var) in folders:
+        folderpath= app.config['UPLOAD_FOLDER'] + "/coop/" + str(var)
+        filename = ['/'+ folderpath + '/' +  f for f in os.listdir(folderpath) if isfile(join(folderpath, f))]
+        return  render_template('blash.html', userimage=filename, name=var)
     else:
         return f'nope'
     
 @app.route('/lots')
 def lots():
+    app.config['UPLOAD_FOLDER'] = 'static/images'
     folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/lots') if isdir(join(app.config['UPLOAD_FOLDER'] + '/lots', f))]
-    return render_template('home.html', folders=folders)
+    return render_template('lots.html', folders=folders)
 
-@app.route('/coop')
-def coop():
-    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/coop') if isdir(join(app.config['UPLOAD_FOLDER'] + '/coop', f))]
-    return render_template('home.html', folders=folders)
-
-@app.route('/repo/<var>') # within html you can get a webpage (display), post is uploading something to
-    #so we need to support both get and post bc we are uploading an image
-
-def repo(var):
-    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/connor') if isdir(join(app.config['UPLOAD_FOLDER'] + '/connor', f))]
+@app.route('/lots/<var>')
+def lotsrepo(var):
+    app.config['UPLOAD_FOLDER'] = 'static/images'
+    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/lots') if isdir(join(app.config['UPLOAD_FOLDER'] + '/lots', f))]
     if str(var) in folders:
-        folderpath= app.config['UPLOAD_FOLDER'] + "/connor/" + str(var)
+        folderpath= app.config['UPLOAD_FOLDER'] + "/lots/" + str(var)
         filename = ['/'+ folderpath + '/' +  f for f in os.listdir(folderpath) if isfile(join(folderpath, f))]
-        return  render_template('blash.html', userimage=filename)
+        return  render_template('blash.html', userimage=filename, name=var)
     else:
         return f'nope'
+
+
+
+#@app.route('/repo/<var>') # within html you can get a webpage (display), post is uploading something to
+#    #so we need to support both get and post bc we are uploading an image
+
+#def repo(var):
+#    folders = [f for f in os.listdir(app.config['UPLOAD_FOLDER'] + '/connor') if isdir(join(app.config['UPLOAD_FOLDER'] + '/connor', f))]
+#    if str(var) in folders:
+#        folderpath= app.config['UPLOAD_FOLDER'] + "/connor/" + str(var)
+#        filename = ['/'+ folderpath + '/' +  f for f in os.listdir(folderpath) if isfile(join(folderpath, f))]
+#        return  render_template('blash.html', userimage=filename)
+#   else:
+#        return f'nope'
     
-    
-    
+    # Route for handling the login page logic
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if  request.form['username'] == 'Cooper' and request.form['password'] == 'admin':
+            return redirect(url_for('cooperuploads'))
+        elif request.form['username'] == 'Matthew' and  request.form['password'] == 'admin':
+            return redirect(url_for('lotsuploads'))
+        elif request.form['username'] == 'Connor' and  request.form['password'] == 'admin':
+            return redirect(url_for('folkuploads'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
+    return render_template('login.html', error=error)
+
+
+@app.route('/cooperuploads', methods=['GET', 'POST'])
+def cooperuploads():
+    UPLOAD_FOLDER = 'static/images/coop'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    if request.method =='POST':
+        files = request.files.getlist("file[]")
+        print(request.files)
+        for file in files:
+            path = os.path.dirname(file.filename)
+            path2 = os.path.join(app.config['UPLOAD_FOLDER'], path)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
+            filename = os.path.join(path, secure_filename(os.path.basename(file.filename)))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return f'nice'
+    return '''
+<!doctype html>
+<title>Upload new File</title>
+<h1>Upload new File</h1>
+<form action='' method="POST" enctype="multipart/form-data">
+    <p><input type="file" name="file[]" webkitdirectory="" directory="">
+    <input type='submit' value='upload'>
+    </p>
+
+</form>
+'''
+
+@app.route('/lotsuploads', methods=['GET', 'POST'])
+def lotsuploads():
+    UPLOAD_FOLDER = 'static/images/lots'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    if request.method =='POST':
+        files = request.files.getlist("file[]")
+        print(request.files)
+        for file in files:
+            path = os.path.dirname(file.filename)
+            path2 = os.path.join(app.config['UPLOAD_FOLDER'], path)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
+            filename = os.path.join(path, secure_filename(os.path.basename(file.filename)))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return f'nice'
+    return '''
+<!doctype html>
+<title>Upload new File</title>
+<h1>Upload new File</h1>
+<form action='' method="POST" enctype="multipart/form-data">
+    <p><input type="file" name="file[]" webkitdirectory="" directory="">
+    <input type='submit' value='upload'>
+    </p>
+
+</form>
+'''
+
+@app.route('/folkuploads', methods=['GET', 'POST'])
+def folkuploads():
+    UPLOAD_FOLDER = 'static/images/folk'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    if request.method =='POST':
+        files = request.files.getlist("file[]")
+        print(request.files)
+        for file in files:
+            path = os.path.dirname(file.filename)
+            path2 = os.path.join(app.config['UPLOAD_FOLDER'], path)
+            if not os.path.exists(path2):
+                os.mkdir(path2)
+            filename = os.path.join(path, secure_filename(os.path.basename(file.filename)))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return f'nice'
+    return '''
+<!doctype html>
+<title>Upload new File</title>
+<h1>Upload new File</h1>
+<form action='' method="POST" enctype="multipart/form-data">
+    <p><input type="file" name="file[]" webkitdirectory="" directory="">
+    <input type='submit' value='upload'>
+    </p>
+
+</form>
+'''       
     #for folder in folders:
     #    var=folder
     #    folderpath= app.config['UPLOAD_FOLDER'] + "/" + str(folder)

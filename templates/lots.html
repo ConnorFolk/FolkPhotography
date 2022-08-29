@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Sublime Cover Bandits -- Folk</title>
+    <title>Sublime Cover Bandits -- Lots</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="static/css/style.css">
@@ -33,26 +33,30 @@
     </ul>
 </nav>
     
-      <div class="row justify-content-center">
+       <div class="row justify-content-center align-items-center row-cols-2">
         <div class="col-lg-4">
         <div class="card">
-    <img src="static/images/FolkBio.jpg" class= "" width= auto, height=auto>
+    <img src="static/images/lots2.jpg" class= "" width= auto, height=auto>
     <div class="card-img-overlay text-white d-flex justify-content-center align-items-start">
-      <h1> Folk's Portfolio  <br/>
-         @Connor_Folk </h1>
+      <h1> Lots' Portfolio  <br/>
+        @Matthew_lots </h1>
     </div>
 </div></div>
  <div class="col-lg-4">
- <img src="static/images/folk2ndimage.jpg" class= "" width= "700", height=auto>
- 
-</div></div>
 
+ <img src="static/images/lots3.jpg" class= "" width= "600", height=auto>
+ </div>
+  <div class="col-lg-4">
+
+ <img src="static/images/lots4.jpg" class= "" width= "600", height=auto>
+ </div>
+</div>
     
     <div class=container>
     <div class="row justify-content-center">
     {% for folder in folders %}
     <div class="col">
-    <a href="{{url_for('folkrepo', var=folder)}}">
+    <a href="{{url_for('lotsrepo', var=folder)}}">
 <span id="boot-icon" class="bi bi-folder" style="font-size: 150px; color: rgb(0, 0, 0);"></span>
     </a>
     <h2>{{folder}}</h2>

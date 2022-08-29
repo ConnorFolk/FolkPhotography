@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sublime Cover Bandits -- Folk</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">  
+    </head>
+    
+    <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+  <a href="#" class="navbar-brand">Sublime Cover Bandits</a>
+    <ul class="navbar-nav mr-auto">
+       <li class="nav-item"><a href="" class="nav-link">Home</a></li>
+             <li class="nav-item dropdown">
+                <a href="" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Portfolios</a>
+                     <div class="dropdown-menu">
+                        <a href="{{url_for('folk')}}" class="dropdown-item">Folk</a>
+                        <a href="{{url_for('coop')}}" class="dropdown-item">Coop</a>
+                        <a href="{{url_for('lots')}}" class="dropdown-item">Lots</a>
+                     </div>
+          </li>
+    </ul>
+</nav>
+    
+       <div class="row mt-4">
+        <div class="col-lg-4">
+        <div class="card">
+    <img src="static/images/FolkBio.jpg" class= "" width= auto, height=auto>
+    <div class="card-img-overlay text-white d-flex justify-content-center align-items-start">
+      <h1> Folk's Portfolio </h1>
+        <h4> @Connor_Folk </h4>
+    </div>
+</div></div>
+ <div class="col-lg-4">
+ <img src="static/images/folk2ndimage.jpg" class= "" width= "700", height=auto>
+ 
+</div></div>
+
+    
+    <div class=container>
+    <div class="row">
+    {% for folder in folders %}
+    <div class="col">
+    <a href="{{url_for('folkrepo', var=folder)}}">
+<span id="boot-icon" class="bi bi-folder" style="font-size: 200px; color: rgb(0, 0, 0);"></span>
+    </a>
+    <h2>{{folder}}.</h2>
+    </div>
+    
+    {% endfor %}
+    </div>
+    </div>
+    
+    </body>

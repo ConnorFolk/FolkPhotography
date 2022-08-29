@@ -49,13 +49,14 @@
 
     
     <div class=container>
+    <h2 style="text-align : center; padding-top: 65px; border-bottom: 1px solid grey"> Folders </h2>
     <div class="row justify-content-center">
     {% for folder in folders %}
     <div class="col">
     <a href="{{url_for('folkrepo', var=folder)}}">
-<span id="boot-icon" class="bi bi-folder" style="font-size: 150px; color: rgb(0, 0, 0);"></span>
+<i id="boot-icon" class="bi-images" style="font-size: 100px; text-align:center; color: rgb(0, 0, 0);"></i>
     </a>
-    <h2>{{folder}}</h2>
+    <h4>{{folder}}</h4>
     </div>
     
     {% endfor %}

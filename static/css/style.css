@@ -35,7 +35,7 @@ a:active { text-decoration: none; }
 /* hero background image */
 .bgimage {
     height:150vh;
-    background: url('/static/images/SublimeCoverBandits.jpg');
+    background: url('/static/images/SublimeCoverBandits.JPG');
     background-size:cover;
     position:relative;
 }

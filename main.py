@@ -11,7 +11,8 @@ import os
 from os.path import isfile, join, isdir
 from werkzeug.utils import secure_filename
 from google.cloud import storage
-
+import datetime
+import time
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "keys.json"
 
 app = Flask(__name__)
@@ -165,48 +166,99 @@ def cooperuploads():
 
 @app.route('/lotsuploads', methods=['GET', 'POST'])
 def lotsuploads():
-    UPLOAD_FOLDER = 'static/images/lots'
+    UPLOAD_FOLDER = 'static/images/lots/'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-    if request.method =='POST':
-        uploaded_file = request.files.getlist('file[]')
+   #if request.method =='POST':
+    bucket_name = 'imagesforsublimecoverbandits'
     
-        if not uploaded_file:
-            return 'No file uploaded.', 400
-    
-        # Create a Cloud Storage client.
-        gcs = storage.Client()
-    
-        # Get the bucket that the file will be uploaded to.
-        bucket = gcs.get_bucket("imagesforsublimecoverbandits")
-        for file in uploaded_file:
-        # Create a new blob and upload the file's content.
-            blob = bucket.blob('static/images/lots/' + file.filename)
-        
-            blob.upload_from_string(
-                file.read(),
-                content_type=file.content_type
-            )
-        #files = request.files.getlist("file[]")
-        #print(request.files)
-        #for file in files:
-        #    path = os.path.dirname(file.filename)
-        #    path2 = os.path.join(app.config['UPLOAD_FOLDER'], path)
-        #    if not os.path.exists(path2):
-        #        os.mkdir(path2)
-        #    filename = os.path.join(path, secure_filename(os.path.basename(file.filename)))
-        #   file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        return f'nice'
-    return '''
-<!doctype html>
-<title>Upload new File</title>
-<h1>Upload new File</h1>
-<form action='' method="POST" enctype="multipart/form-data">
-    <p><input type="file" name="file[]" webkitdirectory="" directory="">
-    <input type='submit' value='upload'>
-    </p>
+    storage_client = storage.Client()
+    # bucket_name = 'your-bucket-name'
+    # blob_name = 'your-object-name'
+    if request.method == 'GET':
+        formget = "<form action='' method='POST' enctype='multipart/form-data'>\n"
+        formget += "  <input type='file' id='files' name='file[]' webkitdirectory='' directory=''/><br />\n"
+        formget += "  <input type='submit' value='Upload File' /><br />\n"
+        formget += "</form>"
+        return formget
 
-</form>
-'''
+    #storage_client = storage.Client()
+    if request.method == 'POST':
+        form="<form>\n"
+        uploaded_file = request.files.getlist('file[]')
+        print(len(uploaded_file))
+        for file in uploaded_file:
+            #time.sleep(15)
+            blob_name =  UPLOAD_FOLDER + file.filename
+            policy = storage_client.generate_signed_post_policy_v4(
+                bucket_name,
+                blob_name,
+                expiration=datetime.timedelta(minutes=10),
+                fields={
+                  'x-goog-meta-test': 'data'
+                }
+            )
+
+            # Create an HTML form with the provided policy
+            header = "<action='{}' method='POST' enctype='multipart/form-data'>\n"
+            form += header.format(policy["url"])
+        
+            # Include all fields returned in the HTML form as they're required
+            for key, value in policy["fields"].items():
+                form += f"  <input name='{key}' value='{value}' type='hidden'/>\n"
+              
+        form += "  <input type='file' id='files' name='file[]'/><br />\n"
+        form += "  <input type='submit' value='Upload File' /><br />\n"
+        form += "</form>"
+        
+        print(form)      
+        
+        return form
+    # if request.method == 'GET':
+    #     formget ='<form action="" method="GET" enctype="multipart/form-data">'
+    #     formget += "  <input type='file' name='file[]' webkitdirectory="" directory=""><br />\n"
+    #     formget += "  <input type='submit' value='Upload File' /><br />\n"
+    #     formget += "</form>"
+    # if request.method =='POST':
+    #     uploaded_file = request.files.getlist('file[]')
+        
+    #     #uploaded_file = request.files.getlist('file[]')
+    #     # Create an HTML form with the provided policy
+    #     for file in uploaded_file:
+    #         blob_name= UPLOAD_FOLDER + file.filename
+    #         policy = storage_client.generate_signed_post_policy_v4(
+    #         bucket_name,
+    #         blob_name,
+    #         expiration=datetime.timedelta(minutes=10),
+    #         fields={
+    #           'x-goog-meta-test': 'data'
+    #         }
+    #     )
+        
+    #         # Create an HTML form with the provided policy
+    #         header = "<form action='{}' method='POST' enctype='multipart/form-data'>\n"
+    #         form = header.format(policy["url"])
+    
+    #     # Include all fields returned in the HTML form as they're required
+    #         for key, value in policy["fields"].items():
+    #             form += f"  <input name='{key}' value='{value}' type='hidden'/>\n"
+            
+    #         form += "  <input type='file' name='file[]' webkitdirectory="" directory=""><br />\n"
+    #         form += "  <input type='submit' value='Upload File' /><br />\n"
+    #         form += "</form>"
+    #         return form
+
+    # #files = request.files.getlist("file[]")
+    # #print(request.files)
+    # #for file in files:
+    # #    path = os.path.dirname(file.filename)
+    # #    path2 = os.path.join(app.config['UPLOAD_FOLDER'], path)
+    # #    if not os.path.exists(path2):
+    # #        os.mkdir(path2)
+    # #    filename = os.path.join(path, secure_filename(os.path.basename(file.filename)))
+    # #   file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            
+    # return formget
 
 @app.route('/folkuploads', methods=['GET', 'POST'])
 def folkuploads():

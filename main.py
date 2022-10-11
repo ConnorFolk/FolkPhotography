@@ -11,6 +11,7 @@ import os
 from os.path import isfile, join, isdir
 from werkzeug.utils import secure_filename
 from google.cloud import storage
+import gzip
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "keys.json"
 
@@ -133,7 +134,6 @@ def cooperuploads():
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     if request.method =='POST':
         uploaded_file = request.files.getlist('file[]')
-    
         if not uploaded_file:
             return 'No file uploaded.', 400
     
@@ -145,11 +145,12 @@ def cooperuploads():
         for file in uploaded_file:
         # Create a new blob and upload the file's content.
             blob = bucket.blob('static/images/coop/' + file.filename)
-        
+            blob.content_encoding = 'gzip'
             blob.upload_from_string(
-                file.read(),
+                gzip.compress(file.read()),
                 content_type=file.content_type
             )
+            
         return f'nice'
     return '''
 <!doctype html>
@@ -181,9 +182,9 @@ def lotsuploads():
         for file in uploaded_file:
         # Create a new blob and upload the file's content.
             blob = bucket.blob('static/images/lots/' + file.filename)
-        
+            blob.content_encoding = 'gzip'
             blob.upload_from_string(
-                file.read(),
+                gzip.compress(file.read()),
                 content_type=file.content_type
             )
         #files = request.files.getlist("file[]")
@@ -226,9 +227,9 @@ def folkuploads():
         for file in uploaded_file:
         # Create a new blob and upload the file's content.
             blob = bucket.blob('static/images/folk/' + file.filename)
-        
+            blob.content_encoding = 'gzip'
             blob.upload_from_string(
-                file.read(),
+                gzip.compress(file.read()),
                 content_type=file.content_type
             )
         return f'nice'

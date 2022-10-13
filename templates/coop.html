@@ -17,7 +17,7 @@
     
     <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top pb-2">
   <a href="#" class="navbar-brand">Sublime Cover Bandits</a>
     <ul class="navbar-nav mr-auto">
        <li class="nav-item"><a href="{{url_for('home')}}" class="nav-link">Home</a></li>
@@ -34,10 +34,10 @@
 </nav>
     
 
-       <div class="row justify-content-center align-items-center row-cols-2">
+       <div class="row justify-content-center align-items-center row-cols-2  pt-5 pt-lg-0">
         <div class="col-lg-4">
         <div class="card">
-    <img src="static/images/coop2.jpg" class= "" width= auto, height=auto>
+    <img src="static/images/coop2.jpg" class= "img-fluid" width= auto, height=auto>
     <div class="card-img-overlay text-white d-flex justify-content-center align-items-start">
       <h1 style="color:black"> Coop's Portfolio  <br/>
         @thatstalker </h1>
@@ -45,15 +45,13 @@
 </div></div>
  <div class="col-lg-4">
 
- <img src="static/images/coop3.JPG" class= "" width= "600", height=auto>
- </div>
-  <div class="col-lg-4">
+ <img src="static/images/coop3.JPG" class= "img-fluid" width= "600", height=auto>
 
- <img src="static/images/coop4.jpeg" class= "" width= "600", height=auto>
+ <img src="static/images/coop4.jpeg" class= "img-fluid pt-4" width= "600", height=auto>
  </div>
 </div>
     
-    <div class=container>
+    <div class="container justify-content-center">
     <h2 style="text-align : center; padding-top: 65px; border-bottom: 1px solid grey"> Folders </h2>
     <div class="row justify-content-center">
     {% for folder in folders %}
